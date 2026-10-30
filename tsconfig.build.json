@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/test-helpers"],
+  "compilerOptions": {
+    "sourceMap": false,
+    "declaration": false,
+    "removeComments": true
+  }
+}
