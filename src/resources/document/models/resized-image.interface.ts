@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
 export interface ResizedImage {
   canvas: Canvas;

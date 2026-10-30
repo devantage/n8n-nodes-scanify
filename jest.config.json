@@ -18,8 +18,5 @@
         }
       }
     ]
-  },
-  "moduleNameMapper": {
-    "^jsdom$": "<rootDir>/src/test-helpers/jsdom.mock.ts"
   }
 }

@@ -2,7 +2,7 @@
 
 # n8n-nodes-scanify
 
-This is an n8n community node that works like a "CamScanner": it takes a photo of a document, detects its edges, corrects the perspective with [jscanify](https://github.com/puffinsoft/jscanify) (OpenCV.js) and returns a PDF or an image.
+This is an n8n community node that works like a "CamScanner": it takes a photo of a document, detects its edges, corrects the perspective with OpenCV.js and returns a PDF or an image.
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
@@ -16,7 +16,7 @@ This is an n8n community node that works like a "CamScanner": it takes a photo o
 
 Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes/installation/) in the n8n community nodes documentation. The published package's name is: `@devantage/n8n-nodes-scanify`
 
-`jscanify` depends on `canvas` (a native module). npm usually downloads a prebuilt binary; if the n8n image has no compatible binary, install the build libraries (`cairo-dev pango-dev jpeg-dev giflib-dev` on Alpine) before installing the package.
+The package has no install scripts, so it works with the n8n community nodes installer. Its native module, [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas), ships prebuilt binaries for Linux (including Alpine), macOS and Windows.
 
 ## Operations
 
@@ -51,23 +51,23 @@ The current version is compatible with n8n installations above v1.0.0.
 
 ### How detection works
 
-jscanify's built-in detection fails on textured backgrounds (granite, wood, fabric), because the document outline blends into the texture. So the node uses its own detection, running on the same OpenCV.js:
+Detection based only on the largest contour fails on textured backgrounds (granite, wood, fabric), because the document outline blends into the texture. So the node uses a more robust detection, running on OpenCV.js:
 
 1. shrinks the image to about 800 px
 2. uses morphological closing and opening to erase the document's text and the background texture
 3. generates candidates from three masks (Otsu, inverted Otsu and Canny)
 4. accepts only convex quadrilaterals and scores each one by the fraction of its perimeter that lies on real edges
-5. picks the largest well-supported quadrilateral. If none qualifies, it falls back to jscanify's detection
+5. picks the largest well-supported quadrilateral. If none qualifies, it falls back to the largest contour of the image
 
-Perspective correction (`extractPaper`) is still jscanify's. Set the `DEBUG_SCAN` environment variable to log the candidate quadrilaterals and their scores.
+The fallback detection and the perspective correction are based on [jscanify](https://github.com/puffinsoft/jscanify) (MIT, © ColonelParrot and other contributors). Set the `DEBUG_SCAN` environment variable to log the candidate quadrilaterals and their scores.
 
 ### Notes
 
 - OpenCV.js is loaded once per process (about 1 s on the first run). Later runs reuse it.
-- jscanify installs a simulated DOM (`global.document`, `global.Image`) in the n8n process. It caused no problems in testing, but it's worth knowing.
 - Detection works best with the document on a contrasting background and all 4 edges visible.
 
 ## Resources
 
 - [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
+- [OpenCV.js](https://docs.opencv.org/4.7.0/d5/d10/tutorial_js_root.html)
 - [jscanify](https://github.com/puffinsoft/jscanify)

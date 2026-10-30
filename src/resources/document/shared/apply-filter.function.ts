@@ -1,8 +1,9 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
 import type { OpenCv, OpenCvMat } from '../../../types';
-import { createCanvas } from '../../../utils';
 import type { ScanFilter } from '../models';
+import { canvasToMat } from './canvas-to-mat.function';
+import { matToCanvas } from './mat-to-canvas.function';
 
 export function applyFilter(
   cv: OpenCv,
@@ -13,17 +14,14 @@ export function applyFilter(
     return canvas;
   }
 
-  const src: OpenCvMat = cv.imread(canvas);
+  const src: OpenCvMat = canvasToMat(cv, canvas);
   const gray: OpenCvMat = new cv.Mat();
-  const output: Canvas = createCanvas(canvas.width, canvas.height);
 
   try {
     cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
 
     if (filter === 'grayscale') {
-      cv.imshow(output, gray);
-
-      return output;
+      return matToCanvas(cv, gray);
     }
 
     // "Document mode": adaptive threshold, good for text with shadows/uneven lighting
@@ -45,13 +43,12 @@ export function applyFilter(
         blockSize,
         15,
       );
-      cv.imshow(output, blackAndWhite);
+
+      return matToCanvas(cv, blackAndWhite);
     } finally {
       blurred.delete();
       blackAndWhite.delete();
     }
-
-    return output;
   } finally {
     src.delete();
     gray.delete();

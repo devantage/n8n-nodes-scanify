@@ -1,5 +1,3 @@
-import type { Canvas } from 'canvas';
-
 /**
  * Minimal typings for the subset of the OpenCV.js API used by this package.
  */
@@ -12,9 +10,15 @@ export interface OpenCvMat extends OpenCvDeletable {
 
   cols: number;
 
+  data: Uint8Array;
+
   data32S: Int32Array;
 
+  channels(): number;
+
   clone(): OpenCvMat;
+
+  copyTo(dst: OpenCvMat): void;
 
   ucharAt(row: number, col: number): number;
 }
@@ -37,6 +41,18 @@ export interface OpenCvPoint {
   y: number;
 }
 
+export interface OpenCvRotatedRect {
+  center: OpenCvPoint;
+}
+
+export interface OpenCvImageData {
+  data: Uint8ClampedArray;
+
+  width: number;
+
+  height: number;
+}
+
 export interface OpenCv {
   Mat: new () => OpenCvMat;
 
@@ -46,19 +62,33 @@ export interface OpenCv {
 
   Point: new (x: number, y: number) => OpenCvPoint;
 
+  Scalar: new () => unknown;
+
   ADAPTIVE_THRESH_GAUSSIAN_C: number;
+
+  BORDER_CONSTANT: number;
+
+  BORDER_DEFAULT: number;
 
   CHAIN_APPROX_SIMPLE: number;
 
+  COLOR_GRAY2RGBA: number;
+
   COLOR_RGBA2GRAY: number;
 
+  CV_32FC2: number;
+
   INTER_AREA: number;
+
+  INTER_LINEAR: number;
 
   MORPH_CLOSE: number;
 
   MORPH_OPEN: number;
 
   MORPH_RECT: number;
+
+  RETR_CCOMP: number;
 
   RETR_LIST: number;
 
@@ -68,9 +98,28 @@ export interface OpenCv {
 
   THRESH_OTSU: number;
 
-  imread(source: Canvas): OpenCvMat;
+  matFromImageData(imageData: OpenCvImageData): OpenCvMat;
 
-  imshow(target: Canvas, mat: OpenCvMat): void;
+  matFromArray(
+    rows: number,
+    cols: number,
+    type: number,
+    values: number[],
+  ): OpenCvMat;
+
+  getPerspectiveTransform(src: OpenCvMat, dst: OpenCvMat): OpenCvMat;
+
+  warpPerspective(
+    src: OpenCvMat,
+    dst: OpenCvMat,
+    matrix: OpenCvMat,
+    size: OpenCvSize,
+    flags: number,
+    borderMode: number,
+    borderValue: unknown,
+  ): void;
+
+  minAreaRect(points: OpenCvMat): OpenCvRotatedRect;
 
   resize(
     src: OpenCvMat,
@@ -99,6 +148,8 @@ export interface OpenCv {
     dst: OpenCvMat,
     size: OpenCvSize,
     sigmaX: number,
+    sigmaY?: number,
+    borderType?: number,
   ): void;
 
   threshold(

@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
 import type {
   OpenCv,
@@ -8,6 +8,7 @@ import type {
   OpenCvPoint,
 } from '../../../types';
 import type { Corners, Point, QuadCandidate } from '../models';
+import { canvasToMat } from './canvas-to-mat.function';
 import { getEdgeSupport } from './get-edge-support.function';
 import { getQuadArea } from './get-quad-area.function';
 import { orderCorners } from './order-corners.function';
@@ -46,7 +47,7 @@ export function detectQuad(cv: OpenCv, canvas: Canvas): Corners | null {
   };
 
   try {
-    const src: OpenCvMat = track(cv.imread(canvas));
+    const src: OpenCvMat = track(canvasToMat(cv, canvas));
     const small: OpenCvMat = track(new cv.Mat());
 
     cv.resize(

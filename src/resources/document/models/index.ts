@@ -9,4 +9,3 @@ export * from './resized-image.interface';
 export * from './scan-filter.type';
 export * from './scan-options.interface';
 export * from './scan-result.interface';
-export * from './scanner.interface';

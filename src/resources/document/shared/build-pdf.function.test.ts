@@ -1,7 +1,6 @@
-import type { Canvas } from 'canvas';
+import { type Canvas, createCanvas } from '@napi-rs/canvas';
 import { PDFDocument, type PDFPage } from 'pdf-lib';
 
-import { createCanvas } from '../../../utils';
 import type { EncodedImage } from '../models';
 import { buildPdf } from './build-pdf.function';
 import { encodeImage } from './encode-image.function';

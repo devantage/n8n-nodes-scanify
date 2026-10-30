@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
 import type { EncodedImage, ScanFilter } from '../models';
 
@@ -17,7 +17,7 @@ export function encodeImage(
   }
 
   return {
-    buffer: canvas.toBuffer('image/jpeg', { quality: jpegQuality / 100 }),
+    buffer: canvas.toBuffer('image/jpeg', jpegQuality),
     mimeType: 'image/jpeg',
     fileExtension: 'jpg',
   };
