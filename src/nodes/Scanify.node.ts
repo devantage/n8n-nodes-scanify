@@ -10,7 +10,7 @@ export class Scanify extends ResourceNode {
       icon: 'file:../icons/icon.svg',
       version: 1,
       description:
-        'Detects the document in a photo, corrects the perspective and returns a PDF or an image (jscanify)',
+        'Detects a document in an image, corrects its perspective, and outputs it as an image or PDF',
       credentials: [],
     });
   }

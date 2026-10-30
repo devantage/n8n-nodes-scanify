@@ -21,7 +21,7 @@ export class ScanOperation extends ResourceOperation {
   public readonly displayName: string = 'Scan Image';
 
   public readonly description: string =
-    'Crop the document out of a photo, correct its perspective and return it as a PDF or an image';
+    'Crop the document out of an image, corrects its perspective, and outputs it as an image or PDF';
 
   public readonly properties: INodeProperties[] = withOperationDisplayOptions(
     this.resource,
