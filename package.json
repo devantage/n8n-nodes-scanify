@@ -1,6 +1,6 @@
 {
   "name": "@devantage/n8n-nodes-scanify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "n8n community nodes that scan and crop documents out of images (edge detection and perspective correction with jscanify) and output them as images or PDFs",
   "contributors": [
     "Guilherme Nogueira <guilherme.nogueira@devantage.com.br>"
