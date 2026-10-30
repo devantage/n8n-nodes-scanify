@@ -1,7 +1,7 @@
 {
   "name": "@devantage/n8n-nodes-scanify",
   "version": "1.0.0",
-  "description": "n8n community nodes that scan document photos (edge detection + perspective correction with jscanify) and return a PDF or an image",
+  "description": "n8n community nodes that scan and crop documents out of images (edge detection and perspective correction with jscanify) and output them as images or PDFs",
   "contributors": [
     "Guilherme Nogueira <guilherme.nogueira@devantage.com.br>"
   ],
@@ -74,7 +74,12 @@
   "lint-staged": {
     "src/**/*.{js,ts}": [
       "npm run lint",
-      "npm run test"
+      "npm run test -- --findRelatedTests --passWithNoTests"
     ]
+  },
+  "allowScripts": {
+    "canvas@3.2.3": true,
+    "fsevents@2.3.3": true,
+    "isolated-vm@6.2.0": true
   }
 }
