@@ -1,18 +1,14 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
-import type {
-  Corners,
-  EncodedImage,
-  Scanner,
-  ScanOptions,
-  ScanResult,
-} from '../models';
+import type { OpenCv } from '../../../types';
+import type { Corners, EncodedImage, ScanOptions, ScanResult } from '../models';
 import { applyFilter } from './apply-filter.function';
 import { buildPdf } from './build-pdf.function';
 import { detectCorners } from './detect-corners.function';
 import { encodeImage } from './encode-image.function';
+import { extractPaper } from './extract-paper.function';
 import { getDistance } from './get-distance.function';
-import { getScanner } from './get-scanner.function';
+import { getOpenCv } from './get-opencv.function';
 import { loadAndResizeImage } from './load-and-resize-image.function';
 import { rescaleCorners } from './rescale-corners.function';
 
@@ -37,12 +33,12 @@ export async function scanImage(
   options: ScanOptions = {},
 ): Promise<ScanResult> {
   const resolvedOptions: Required<ScanOptions> = resolveOptions(options);
-  const scanner: Scanner = await getScanner();
+  const cv: OpenCv = await getOpenCv();
   const { canvas: source, scale } = await loadAndResizeImage(
     input,
     resolvedOptions.maxDimension,
   );
-  const corners: Corners | null = detectCorners(scanner, source);
+  const corners: Corners | null = detectCorners(cv, source);
 
   let cropped: Canvas;
 
@@ -60,18 +56,14 @@ export async function scanImage(
       ),
     );
 
-    cropped = scanner.jscanify.extractPaper(source, width, height, corners);
+    cropped = extractPaper(cv, source, width, height, corners);
   } else if (resolvedOptions.onNotDetected === 'original') {
     cropped = source;
   } else {
     throw new Error('No document detected in the image');
   }
 
-  const filtered: Canvas = applyFilter(
-    scanner.cv,
-    cropped,
-    resolvedOptions.filter,
-  );
+  const filtered: Canvas = applyFilter(cv, cropped, resolvedOptions.filter);
   const encodedImage: EncodedImage = encodeImage(
     filtered,
     resolvedOptions.filter,

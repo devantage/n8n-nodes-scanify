@@ -1,7 +1,6 @@
-import type { Canvas, CanvasRenderingContext2D } from 'canvas';
+import { type Canvas, createCanvas, type SKRSContext2D } from '@napi-rs/canvas';
 
 import type { Corners, Point } from '../resources/document/models';
-import { createCanvas } from '../utils';
 
 export interface DocumentPhoto {
   canvas: Canvas;
@@ -28,7 +27,7 @@ export function createDocumentPhoto(
   corners: Corners = DOCUMENT_PHOTO_CORNERS,
 ): DocumentPhoto {
   const canvas: Canvas = createCanvas(width, height);
-  const context: CanvasRenderingContext2D = canvas.getContext('2d');
+  const context: SKRSContext2D = canvas.getContext('2d');
   const points: Point[] = [
     corners.topLeftCorner,
     corners.topRightCorner,
@@ -66,7 +65,7 @@ export function createBlankPhoto(
   height: number = 600,
 ): Buffer {
   const canvas: Canvas = createCanvas(width, height);
-  const context: CanvasRenderingContext2D = canvas.getContext('2d');
+  const context: SKRSContext2D = canvas.getContext('2d');
 
   context.fillStyle = '#808080';
   context.fillRect(0, 0, width, height);

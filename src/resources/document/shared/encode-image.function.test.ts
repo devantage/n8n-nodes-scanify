@@ -1,6 +1,5 @@
-import type { Canvas } from 'canvas';
+import { type Canvas, createCanvas } from '@napi-rs/canvas';
 
-import { createCanvas } from '../../../utils';
 import type { EncodedImage } from '../models';
 import { encodeImage } from './encode-image.function';
 
@@ -25,9 +24,7 @@ describe('encodeImage', (): void => {
       const toBufferSpy: jest.SpyInstance = jest.spyOn(canvas, 'toBuffer');
       const encoded: EncodedImage = encodeImage(canvas, filter, 60);
 
-      expect(toBufferSpy).toHaveBeenCalledWith('image/jpeg', {
-        quality: 0.6,
-      });
+      expect(toBufferSpy).toHaveBeenCalledWith('image/jpeg', 60);
       expect(encoded.mimeType).toBe('image/jpeg');
       expect(encoded.fileExtension).toBe('jpg');
       expect(encoded.buffer.subarray(0, 2)).toEqual(Buffer.from([0xff, 0xd8]));

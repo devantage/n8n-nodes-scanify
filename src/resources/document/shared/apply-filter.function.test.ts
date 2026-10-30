@@ -1,9 +1,9 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
 import { createDocumentPhoto } from '../../../test-helpers';
-import type { Scanner } from '../models';
+import type { OpenCv } from '../../../types';
 import { applyFilter } from './apply-filter.function';
-import { getScanner } from './get-scanner.function';
+import { getOpenCv } from './get-opencv.function';
 
 function getPixels(canvas: Canvas): Uint8ClampedArray {
   return canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height)
@@ -11,21 +11,21 @@ function getPixels(canvas: Canvas): Uint8ClampedArray {
 }
 
 describe('applyFilter', (): void => {
-  let scanner: Scanner;
+  let cv: OpenCv;
 
   beforeAll(async (): Promise<void> => {
-    scanner = await getScanner();
+    cv = await getOpenCv();
   });
 
   it('returns the same canvas when no filter is applied', (): void => {
     const { canvas } = createDocumentPhoto();
 
-    expect(applyFilter(scanner.cv, canvas, 'none')).toBe(canvas);
+    expect(applyFilter(cv, canvas, 'none')).toBe(canvas);
   });
 
   it('converts the image to grayscale', (): void => {
     const { canvas } = createDocumentPhoto();
-    const output: Canvas = applyFilter(scanner.cv, canvas, 'grayscale');
+    const output: Canvas = applyFilter(cv, canvas, 'grayscale');
     const pixels: Uint8ClampedArray = getPixels(output);
 
     expect(output).not.toBe(canvas);
@@ -45,9 +45,7 @@ describe('applyFilter', (): void => {
 
   it('converts the image to black and white', (): void => {
     const { canvas } = createDocumentPhoto();
-    const pixels: Uint8ClampedArray = getPixels(
-      applyFilter(scanner.cv, canvas, 'bw'),
-    );
+    const pixels: Uint8ClampedArray = getPixels(applyFilter(cv, canvas, 'bw'));
 
     let gray: number = 0;
 

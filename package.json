@@ -1,7 +1,7 @@
 {
   "name": "@devantage/n8n-nodes-scanify",
-  "version": "1.0.1",
-  "description": "n8n community nodes that scan and crop documents out of images (edge detection and perspective correction with jscanify) and output them as images or PDFs",
+  "version": "1.0.2",
+  "description": "n8n community nodes that scan and crop documents out of images (edge detection and perspective correction) and output them as images or PDFs",
   "contributors": [
     "Guilherme Nogueira <guilherme.nogueira@devantage.com.br>"
   ],
@@ -14,8 +14,8 @@
     "n8n-community-node-package",
     "scanner",
     "pdf",
-    "jscanify",
-    "camscanner"
+    "camscanner",
+    "opencv"
   ],
   "license": "MIT",
   "engines": {
@@ -46,7 +46,8 @@
   },
   "dependencies": {
     "@devantage/n8n-custom-nodes-framework": "^1.1.0",
-    "jscanify": "^1.4.3",
+    "@napi-rs/canvas": "^1.1.0",
+    "@techstark/opencv-js": "4.7.0-release.1",
     "pdf-lib": "^1.17.1"
   },
   "devDependencies": {
@@ -78,7 +79,6 @@
     ]
   },
   "allowScripts": {
-    "canvas@3.2.3": true,
     "fsevents@2.3.3": true,
     "isolated-vm@6.2.0": true
   }

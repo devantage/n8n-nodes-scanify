@@ -1,12 +1,10 @@
-import type { Canvas } from 'canvas';
+import type { Canvas } from '@napi-rs/canvas';
 
-import type { Corners, Scanner } from '../models';
+import type { OpenCv } from '../../../types';
+import type { Corners } from '../models';
+import { detectByLargestContour } from './detect-by-largest-contour.function';
 import { detectQuad } from './detect-quad.function';
-import { detectWithJscanify } from './detect-with-jscanify.function';
 
-export function detectCorners(
-  scanner: Scanner,
-  canvas: Canvas,
-): Corners | null {
-  return detectQuad(scanner.cv, canvas) ?? detectWithJscanify(scanner, canvas);
+export function detectCorners(cv: OpenCv, canvas: Canvas): Corners | null {
+  return detectQuad(cv, canvas) ?? detectByLargestContour(cv, canvas);
 }

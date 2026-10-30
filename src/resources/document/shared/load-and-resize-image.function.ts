@@ -1,6 +1,10 @@
-import type { Canvas, Image } from 'canvas';
+import {
+  type Canvas,
+  createCanvas,
+  type Image,
+  loadImage,
+} from '@napi-rs/canvas';
 
-import { createCanvas, loadImage } from '../../../utils';
 import type { ResizedImage } from '../models';
 
 /** Loads the image and downscales it to at most `maxDimension` px on its longest side. */

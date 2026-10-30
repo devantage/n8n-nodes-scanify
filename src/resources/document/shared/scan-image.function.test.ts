@@ -1,4 +1,4 @@
-import { type Image } from 'canvas';
+import { type Image, loadImage } from '@napi-rs/canvas';
 import { PDFDocument } from 'pdf-lib';
 
 import {
@@ -7,7 +7,6 @@ import {
   type DocumentPhoto,
   getMaxCornerError,
 } from '../../../test-helpers';
-import { loadImage } from '../../../utils';
 import type { Corners, ScanResult } from '../models';
 import { scanImage } from './scan-image.function';
 
