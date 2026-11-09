@@ -1,5 +1,8 @@
 ![Logo](https://s3.devantage.com.br/devantage-public/logo-100x100.png)
 
+> [!WARNING]
+> **This project is deprecated.** It has been superseded by the DocScanify monorepo and will no longer receive updates. Please use [DocScanify](https://github.com/devantage/docscanify) instead.
+
 # n8n-nodes-scanify
 
 This is an n8n community node that works like a "CamScanner": it takes a photo of a document, detects its edges, corrects the perspective with OpenCV.js and returns a PDF or an image.
